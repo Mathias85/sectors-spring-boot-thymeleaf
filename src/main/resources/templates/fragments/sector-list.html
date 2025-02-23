@@ -1,0 +1,16 @@
+<!-- Recursive Fragment for Rendering Sectors -->
+<th:block th:fragment="renderSectors(sectorList, level, selectedIds)">
+    <th:block th:each="sector : ${sectorList}">
+
+        <option th:value="${sector.id}"
+                th:text="${ #strings.repeat('&nbsp;&nbsp;&nbsp;&nbsp;', level) + sector.name}"
+                th:selected="${selectedIds ne null and #lists.contains(selectedIds, sector.id)}"
+                class="hover:bg-indigo-100 focus:bg-indigo-200 checked:bg-indigo-300"
+                th:classappend="${level == 0 ? 'font-bold text-gray-800' : level == 1 ? 'pl-4' : 'pl-8 text-gray-500'}"
+        >
+
+            <option th:replace="~{fragments/sector-list ::renderSectors(${sector.children}, ${level + 1}, ${selectedIds})}"></option>
+        </option>
+
+    </th:block>
+</th:block>
